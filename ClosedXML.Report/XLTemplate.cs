@@ -3,7 +3,6 @@ using ClosedXML.Report.Excel;
 using ClosedXML.Report.Options;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -57,6 +56,7 @@ namespace ClosedXML.Report
             TagsRegister.Add<HiddenTag>("Hidden", 0);
             TagsRegister.Add<HiddenTag>("Hide", 0);
             TagsRegister.Add<PageOptionsTag>("PageOptions", 0);
+            TagsRegister.Add<FreezePanesTag>(FreezePanesTag.DefaultTagName, FreezePanesTag.DefaultTagPriority);
             TagsRegister.Add<ProtectedTag>("Protected", 0);
         }
 
@@ -79,12 +79,14 @@ namespace ClosedXML.Report
         public XLGenerateResult Generate()
         {
             CheckIsDisposed();
-            foreach (var ws in Workbook.Worksheets.Where(sh => sh.Visibility == XLWorksheetVisibility.Visible && !sh.PivotTables.Any()).ToArray())
+            foreach (var ws in Workbook.Worksheets
+                .Where(sh => sh.Visibility == XLWorksheetVisibility.Visible && !sh.PivotTables.Any()).ToArray())
             {
                 ws.ReplaceCFFormulaeToR1C1();
                 _interpreter.Evaluate(ws.AsRange());
                 ws.ReplaceCFFormulaeToA1();
             }
+
             return new XLGenerateResult(_errors);
         }
 
