@@ -77,7 +77,7 @@ namespace ClosedXML.Report.Tests
                 {
                     using (var db = new DbDemos())
                     {
-                        var orders = db.orders.LoadWith(x => x.Customer);
+                        var orders = db.orders.LoadWith(x => x.Customer).ToList();
                         tpl.AddVariable("Orders", orders);
                     }
                 },

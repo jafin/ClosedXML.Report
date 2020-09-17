@@ -73,7 +73,7 @@ namespace ClosedXML.Report.Tests
             using (var expectStream = File.Open(fileExpected, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (var expected = new XLWorkbook(expectStream))
             {
-                actual.Worksheets.Count.ShouldBeEquivalentTo(expected.Worksheets.Count, $"Count of worksheets must be {expected.Worksheets.Count}");
+                actual.Worksheets.Count.Should().Be(expected.Worksheets.Count, $"Count of worksheets must be {expected.Worksheets.Count}");
 
                 for (int i = 0; i < actual.Worksheets.Count; i++)
                 {
