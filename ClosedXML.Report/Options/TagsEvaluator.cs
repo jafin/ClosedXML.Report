@@ -8,7 +8,7 @@ namespace ClosedXML.Report.Options
 {
     internal class TagsEvaluator
     {
-        private static readonly Regex TagsMatch = new Regex(@"\<\<.+?\>\>");
+        private static readonly Regex TagsMatch = new Regex(@"\<\<.+?\>\>", RegexOptions.Singleline);
 
         private IEnumerable<string> GetAllTags(string cellValue)
         {
@@ -21,7 +21,7 @@ namespace ClosedXML.Report.Options
             List<OptionTag> result = new List<OptionTag>();
             foreach (var expr in GetAllTags(value))
             {
-                var optionTag = ParseTag(expr.Substring(2, expr.Length-4));
+                var optionTag = ParseTag(expr.Substring(2, expr.Length - 4));
                 if (optionTag == null)
                     continue;
                 optionTag.Cell = cell;
@@ -30,9 +30,11 @@ namespace ClosedXML.Report.Options
                 {
                     optionTag.RangeOptionsRow = range.LastRow().RangeAddress;
                 }
+
                 result.Add(optionTag);
                 value = value.Replace(expr, "");
             }
+
             newValue = value.Trim();
             return result.ToArray();
         }
@@ -40,20 +42,27 @@ namespace ClosedXML.Report.Options
         private OptionTag ParseTag(string str)
         {
             string name;
+            const int spacePlusEquals = 2;
+
             Dictionary<string, string> dictionary;
             using (var reader = new VernoStringReader(str))
             {
                 name = reader.ReadWord();
-            
                 dictionary = new Dictionary<string, string>();
                 foreach (var pair in reader.ReadNamedValues(" ", "="))
                 {
+                    if (pair.Key.Equals("json", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        dictionary.Add(pair.Key.ToLower(),
+                            str.Substring(name.Length + pair.Key.Length + spacePlusEquals));
+                        break;
+                    }
+
                     dictionary.Add(pair.Key.ToLower(), pair.Value);
                 }
             }
 
             return TagsRegister.CreateOption(name, dictionary);
-
         }
     }
 }
