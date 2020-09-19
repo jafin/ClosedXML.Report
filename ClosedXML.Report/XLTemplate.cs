@@ -57,7 +57,9 @@ namespace ClosedXML.Report
             TagsRegister.Add<HiddenTag>("Hide", 0);
             TagsRegister.Add<PageOptionsTag>("PageOptions", 0);
             TagsRegister.Add<FreezePanesTag>(FreezePanesTag.DefaultTagName, FreezePanesTag.DefaultTagPriority);
+            TagsRegister.Add<ConditionalFormattingTag>(ConditionalFormattingTag.DefaultTagName, ConditionalFormattingTag.DefaultTagPriority);
             TagsRegister.Add<ProtectedTag>("Protected", 0);
+
         }
 
         public XLTemplate(string fileName) : this(new XLWorkbook(fileName))

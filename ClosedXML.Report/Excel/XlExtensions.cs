@@ -318,7 +318,7 @@ namespace ClosedXML.Report.Excel
                 var target = format.Ranges.OrderBy(x=>x.RangeAddress.FirstAddress.RowNumber)
                     .ThenBy(x=> x.RangeAddress.FirstAddress.ColumnNumber)
                     .First().FirstCell();
-                foreach (var v in format.Values.Where(v => v.Value.Value.StartsWith("&=")).ToList())
+                foreach (var v in format.Values.Where(v => v.Value != null && v.Value.Value.StartsWith("&=")).ToList())
                 {
                     var f = v.Value.Value.Substring(1);
                     var a1 = target.GetFormulaA1(f);
