@@ -24,8 +24,8 @@ namespace ClosedXML.Report.Tests
                 {
                     using (var db = new DbDemos())
                     {
-                        var rows = from o in db.orders
-                            select new {o.Customer.Company, o.PaymentMethod, OrderNo = o.OrderNo.ToString(), o.ShipDate, o.ItemsTotal, o.TaxRate, o.AmountPaid};
+                        var rows = (from o in db.orders
+                            select new {o.Customer.Company, o.PaymentMethod, OrderNo = o.OrderNo.ToString(), o.ShipDate, o.ItemsTotal, o.TaxRate, o.AmountPaid}).ToList();
                         tpl.AddVariable("Orders", rows);
                     }
                 },
@@ -40,8 +40,8 @@ namespace ClosedXML.Report.Tests
         {
             using (var db = new DbDemos())
             {
-                var rows = from o in db.orders
-                    select new {o.Customer.Company, o.PaymentMethod, o.OrderNo, o.ShipDate, o.ItemsTotal, o.TaxRate, o.AmountPaid};
+                var rows = (from o in db.orders
+                    select new {o.Customer.Company, o.PaymentMethod, o.OrderNo, o.ShipDate, o.ItemsTotal, o.TaxRate, o.AmountPaid}).ToList();
 
                 using (var workbook = new XLWorkbook())
                 {
