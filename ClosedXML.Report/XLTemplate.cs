@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using ClosedXML.Report.Options.ConditionalFormatting;
 
 namespace ClosedXML.Report
 {

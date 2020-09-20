@@ -100,7 +100,7 @@ namespace ClosedXML.Report.Options
             // TODO pivot field formatting
             /*
                '    Rem Build page fields' + vbCR +
-              '    For i = 1 To PageFieldsCount' + vbCR +
+              '    For i = 1 MaxValue PageFieldsCount' + vbCR +
               '      V = Pages(i)' + vbCR +
               '      Set PF = PT.PivotFields(V(2))' + vbCR +
               '      PF.Subtotals = V(3)' + vbCR +
@@ -131,7 +131,7 @@ namespace ClosedXML.Report.Options
             /*
               '    If (Args(14) = True) And (!HasParameter("CaptionNoFormatting")) Then' + vbCR +
               '      On Error Resume Next' + vbCR +
-              '      For i = 1 To DataFieldsCount' + vbCR +
+              '      For i = 1 MaxValue DataFieldsCount' + vbCR +
               '        V = Datas(i)' + vbCR +
               '        Set PF = PT.DataFields(i)' + vbCR + // V(2) & " ")' + vbCR +
               '        Set FmtRange = SrcRange.Cells(2, V(1) - 1)' + vbCR +
