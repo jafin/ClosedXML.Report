@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ClosedXML.Excel;
 using ClosedXML.Report.Tests.TestModels;
 using Xunit;
 using Xunit.Abstractions;
@@ -12,11 +13,29 @@ namespace ClosedXML.Report.Tests.ConditionalFormat
         {
         }
 
+        [Fact]
+        public void Blah()
+        {
+            var workBook = new XLWorkbook(@"C:\temp\ConditionalFormatOut2.xlsx");
+            var sheet = workBook.Worksheet("Sheet1");
+            var cell = sheet.Cell("J3");
+            var newCell = sheet.Cell("J1");
+            newCell.CopyFrom(cell);
+            //workBook.Save();
+        }
+
+
+
         [Theory,
          InlineData("ConditionalFormat.xlsx")]
         public void CanExecuteTemplate(string templateFile)
         {
-            XlTemplateTest(templateFile, tpl => tpl.AddVariable("Orders", WithOrders()),
+            XlTemplateTest(templateFile, tpl =>
+                {
+                    tpl.AddVariable("Orders", WithOrders());
+                    tpl.Generate();
+                    tpl.SaveAs(@"C:\temp\ConditionalFormatOut.xlsx");
+                },
                 wb => CompareWithGauge(wb, templateFile));
         }
 
