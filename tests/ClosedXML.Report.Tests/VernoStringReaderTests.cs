@@ -71,7 +71,7 @@ namespace ClosedXML.Report.Tests
             array.Should().ContainInOrder("Sed pharetra feugiat ante.", "Suspendisse;eget", "nulla vitae arcu", "interdum ; scelerisque.");
 
             reader = new VernoStringReader("10, 20, 30, 40");
-            reader.ReadArray<int>(",").Should().BeEquivalentTo(10, 20, 30, 40);
+            reader.ReadArray<int>(",").Should().BeEquivalentTo(new[] { 10, 20, 30, 40 });
         }
 
         [Fact]
