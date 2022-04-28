@@ -7,7 +7,6 @@ using System.Threading;
 using ClosedXML.Excel;
 using ClosedXML.Report.Excel;
 using FluentAssertions;
-//using JetBrains.Profiler.Windows.Api;
 using Xunit.Abstractions;
 
 namespace ClosedXML.Report.Tests
