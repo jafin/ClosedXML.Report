@@ -101,7 +101,6 @@ namespace ClosedXML.Report.Tests
             var reader = new VernoStringReader("My birthday is 28.12.1979 (Дек 15, old style)", CultureInfo.GetCultureInfo("ru-RU"));
             reader.ReadTo("s");
             reader.ReadDateTime().Should().Be(DateTime.Parse("28.12.1979"));
-            //reader.ReadInBrackets('(', ')').ReadDateTime("MMM dd").Should().Be(new DateTime(DateTime.Today.Year, 12, 15));
         }
 
         [Fact]
