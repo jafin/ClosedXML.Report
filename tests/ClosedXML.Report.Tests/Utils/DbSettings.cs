@@ -17,7 +17,9 @@ namespace ClosedXML.Report.Tests
     {
         public IEnumerable<IDataProviderSettings> DataProviders => Enumerable.Empty<IDataProviderSettings>();
         public string DefaultConfiguration => "Default";
-        public string DefaultDataProvider => "SQLite";
+        public string DefaultDataProvider => ProviderName.SQLite;
+
+        private readonly Configuration _configuration = new Configuration();
 
         public IEnumerable<IConnectionStringSettings> ConnectionStrings
         {
@@ -28,7 +30,7 @@ namespace ClosedXML.Report.Tests
                     {
                         Name = "Default",
                         ProviderName = ProviderName.SQLite,
-                        ConnectionString = "Data Source=..\\..\\..\\..\\DB\\dbdemos.sqlite;Version=3;"
+                        ConnectionString = _configuration.DefaultConnectionString
                     };
             }
         }
