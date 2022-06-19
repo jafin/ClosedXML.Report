@@ -119,6 +119,8 @@ namespace ClosedXML.Report
                     return tpl;
                 }).ToArray();
 
+            if (result._subranges.Any()) GuardForValidSubrange(result);
+
             if (result._rangeOption != null)
             {
                 var source = result._rangeOption.GetParameter("source");
@@ -126,6 +128,34 @@ namespace ClosedXML.Report
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Validate Vertical subrange lies between a parent range rows.
+        /// </summary>
+        /// <param name="rangeTemplate"></param>
+        /// <exception cref="InvalidNestedRangeException"></exception>
+        private static void GuardForValidSubrange(RangeTemplate rangeTemplate)
+        {
+            var firstParentAddress = rangeTemplate._rowRange.RangeAddress.FirstAddress;
+            var lastParentAddress = rangeTemplate._rowRange.RangeAddress.LastAddress;
+
+            foreach (var subrange in rangeTemplate._subranges.Where(sr => !sr.IsHorizontal))
+            {
+                var firstAddress = subrange._rowRange.RangeAddress.FirstAddress;
+                var lastAddress = subrange._rowRange.RangeAddress.LastAddress;
+                if (firstAddress.RowNumber <= firstParentAddress.RowNumber)
+                {
+                    throw new InvalidNestedRangeException(
+                        $"Nested range [{subrange.Name}] cannot start on row [{firstAddress.RowNumber}], must be nested between parent [{rangeTemplate.Name}] row range.");
+                }
+
+                if (lastAddress.RowNumber >= lastParentAddress.RowNumber)
+                {
+                    throw new InvalidNestedRangeException(
+                        $"Nested range [{subrange.Name}] cannot end on row [{firstAddress.RowNumber}], must be nested between parent [{rangeTemplate.Name}] row range.");
+                }
+            }
         }
 
         private static IEnumerable<IXLNamedRange> GetInnerRanges(IXLRange prng)
@@ -458,6 +488,7 @@ namespace ClosedXML.Report
                     tags = _tagsEvaluator.Parse(cell.GetString(), range, cell, out newValue);
                     cell.Value = newValue;
                 }
+
                 if (cell.Row > 1 && cell.Row == _rowCnt)
                     _rangeTags.AddRange(tags);
                 else
